@@ -1,24 +1,33 @@
 import pygame as pg
-
+import os
 
 WIDTH=800
 HEIGHT=800
-color_screen = (127,127,127)
-cradius=75 
+COLOR_SCREEN = (0,0,0)
+SPACESHIP_SIZE=(50,50)
 FPS=60
-
+VEL=5
+sprite_folder="sprites"
 
 pg.init()
 screen = pg.display.set_mode([WIDTH, HEIGHT])
 
 
+def load_sprite(sprite):
+    return pg.image.load(os.path.join(sprite_folder,sprite))
+
+
+SPACESHIP_IMAGE=load_sprite("ufodark.png")
+SPACESHIP=pg.transform.scale(SPACESHIP_IMAGE,SPACESHIP_SIZE)
+
+
 def draw_screen(circle):
-    screen.fill(color_screen)
-    pg.draw.circle(screen,(0,0,255),(circle.x,circle.y),cradius)
+    screen.fill(COLOR_SCREEN)
+    screen.blit(SPACESHIP,(circle.x,circle.y))
     pg.display.update()
 
 
-circle=pg.Rect(WIDTH/2, HEIGHT/2,cradius,cradius)
+ufo=pg.Rect((WIDTH/2, HEIGHT/2),SPACESHIP_SIZE)
 clock=pg.time.Clock()
 
 running=True
@@ -27,6 +36,16 @@ while running:
     for event in pg.event.get():
         if event.type== pg.QUIT:
             running=False
-    draw_screen(circle)
-    circle.x+=1
+    keys_pressed=pg.key.get_pressed()
+    if keys_pressed[pg.K_LEFT]:
+        ufo.x-=VEL
+    if keys_pressed[pg.K_RIGHT]:
+        ufo.x+=VEL
+    if keys_pressed[pg.K_UP]:
+        ufo.y-=VEL
+    if keys_pressed[pg.K_DOWN]:
+        ufo.y+=VEL
+    
+    draw_screen(ufo)
+
 pg.quit()
