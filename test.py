@@ -10,7 +10,7 @@ VEL=5
 sprite_folder="sprites"
 
 pg.init()
-screen = pg.display.set_mode([WIDTH, HEIGHT])
+screen = pg.display.set_mode([800, 800])
 
 
 def load_sprite(sprite):
